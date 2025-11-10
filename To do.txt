@@ -1,0 +1,16 @@
+
+We’ll add UI/UX improvements: loader/spinner while fetching, error handling, empty states, etc.
+
+
+
+
+
+after everything works:
+
+Add UI improvements: maybe a sidebar filter instead of inline selects, price slider, brand checkboxes, etc.
+
+Consider pagination if dataset is large (skip/limit, “Load more”).
+
+Style the cards and filters nicely with Tailwind (hover effects, subtle borders, palette consistent with luxury watch theme).
+
+On the detail page (WatchDetails.jsx), fetch details for one watch based on URL param and show more data: description, years of production, materials, etc.
