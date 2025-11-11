@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import WatchCard from "../components/WatchCard";
 import { mockWatches } from "../data/mockWatches";
+import { motion } from "framer-motion"; // eslint-disable-line no-unused-vars
 
 function Shop() {
   const [watches, setWatches] = useState([]);
@@ -80,7 +81,10 @@ function Shop() {
 
   return (
     <>
-      <div>
+      <motion.div initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
         <h2 className="text-2xl font-semibold mb-4">Shop Watches</h2>
 
         {/* Filters Section */}
@@ -129,7 +133,7 @@ function Shop() {
             <WatchCard key={watch.id} watch={watch} />
           ))}
         </div>
-      </div>
+      </motion.div>
     </>
   )
 }
