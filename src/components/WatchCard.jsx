@@ -10,8 +10,8 @@ function WatchCard({ watch }) {
                 className="inline-flex items-center px-8 my-8 w-64 h-64 object-cover"
             />
             <div className="p-4">
-                <h3 className="text-lg font-semibold">{watch.brand} {watch.model}</h3>
-                <h5 className="">{watch.reference_number}</h5>
+                <h2 className="text-lg font-bold">{watch.brand}</h2>
+                <h3 className="text-md font-semibold mb-2">{watch.model}</h3>
                 <p className="text-gray-500">{watch.movement}</p>
                 {watch.price && (
                     <p className="text-blue-600 font-bold mt-2">${watch.price}.00</p>

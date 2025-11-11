@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { mockWatches } from "../data/mockWatches";
+import { motion } from "framer-motion"; // eslint-disable-line no-unused-vars
 
 function WatchDetails() {
   const { refOrId } = useParams();
@@ -50,30 +51,65 @@ function WatchDetails() {
 
   return (
     <>
-      <div className="max-w-3xl mx-auto">
-        <Link to="/shop" className="text-blue-600 hover:underline mb-4 inline-block">
-          ← Back to Shop
-        </Link>
-        <div className="flex flex-col md:flex-row gap-6">
-          <img
-            src={watch.image || "https://via.placeholder.com/500x500?text=No+Image"}
-            alt={`${watch.brand} ${watch.model}`}
-            className="w-full md:w-1/2 object-cover rounded"
-          />
-          <div className="md:w-1/2 space-y-4">
-            <h1 className="text-3xl font-bold">{watch.brand} {watch.model}</h1>
-            <p className="text-gray-600">{watch.reference_number || watch.id}</p>
-            <p className="text-blue-600 font-bold">{watch.price ? `$${watch.price}` : "Price unavailable"}</p>
-            <div className="space-y-2">
+      <motion.div initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+        <div className="w-full text-left mb-4">
+          <Link to="/shop" className="text-blue-600 hover:underline inline-block font-medium">
+            ← Back to Shop
+          </Link>
+        </div>
+        <div className="text-sm text-gray-500 mb-6">
+          <Link to="/" className="hover:underline text-blue-600">
+            Home
+          </Link>{" "}
+          /{" "}
+          <Link to="/shop" className="hover:underline text-blue-600">
+            Shop
+          </Link>{" "}
+          / <span className="text-gray-700">{watch.model}</span>
+        </div>
+      </motion.div>
+
+      <motion.div className="max-w-5xl mx-auto p-4 md:p-6 text-left"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+        <div className="flex flex-col md:flex-row gap-8 items-center">
+          <div className="w-full md:w-1/2">
+            <img
+              src={watch.image || "https://via.placeholder.com/500x500?text=No+Image"}
+              alt={`${watch.brand} ${watch.model}`}
+              className="w-full object-cover rounded-4xl shadow-md px-2 py-2"
+            />
+          </div>
+
+          <div className="w-full md:w-1/2 space-y-4">
+            <h1 className="text-3xl md:text-4xl font-bold">{watch.brand}</h1>
+            <h1 className="text-2xl md:text-3xl font-semibold">{watch.model}</h1>
+            <p className="text-gray-600 text-sm md:text-base">{watch.reference_number || watch.id}</p>
+            
+            <div className="space-y-2 text-gray-800 text-sm md:text-base mt-10">
               <p><strong>Movement:</strong> {watch.movement}</p>
               <p><strong>Year of production:</strong> {watch.year_of_production}</p>
               <p><strong>Case material:</strong> {watch.case_material}</p>
               <p><strong>Case diameter:</strong> {watch.case_diameter}</p>
               <p><strong>Description:</strong> {watch.description}</p>
             </div>
+            
+            <p className="text-blue-600 font-bold text-xl mt-10">{watch.price ? `$${watch.price}` : "Price unavailable"}</p>
+          
+            <Link
+              to="/cart"
+              className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-700 transition duration-200"
+            >
+              Buy Now
+            </Link>
           </div>
         </div>
-      </div>
+      </motion.div>
     </>
   )
 }
