@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { mockWatches } from "../data/mockWatches";
 import { motion } from "framer-motion"; // eslint-disable-line no-unused-vars
+import { useCart } from "../context/CartContext";
+import { useNavigate } from "react-router-dom";
+
 
 function WatchDetails() {
   const { refOrId } = useParams();
@@ -10,6 +13,14 @@ function WatchDetails() {
 
   const token = import.meta.env.VITE_WATCH_API_TOKEN;
   const base = import.meta.env.VITE_WATCH_API_BASE_URL;
+
+  const { addToCart } = useCart();
+  const navigate = useNavigate();
+
+  const handleBuyNow = () => {
+    addToCart(watch);
+    navigate("/cart");
+  };
 
   useEffect(() => {
     async function fetchWatch() {
@@ -51,15 +62,11 @@ function WatchDetails() {
 
   return (
     <>
-      <motion.div initial={{ opacity: 0, y: 20 }}
+      <motion.div className="max-w-5xl mx-auto p-4 md:p-8 text-left"
+        initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        <div className="w-full text-left mb-4">
-          <Link to="/shop" className="text-blue-600 hover:underline inline-block font-medium">
-            ← Back to Shop
-          </Link>
-        </div>
         <div className="text-sm text-gray-500 mb-6">
           <Link to="/" className="hover:underline text-blue-600">
             Home
@@ -101,12 +108,12 @@ function WatchDetails() {
             
             <p className="text-blue-600 font-bold text-xl mt-10">{watch.price ? `$${watch.price}` : "Price unavailable"}</p>
           
-            <Link
-              to="/cart"
-              className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg shadow hover:bg-blue-700 transition duration-200"
+            <button
+              onClick={handleBuyNow}
+              className="bg-blue-600 text-white px-6 py-3 rounded-lg mt-2 font-medium hover:bg-blue-700 transition cursor-pointer"
             >
               Buy Now
-            </Link>
+            </button>
           </div>
         </div>
       </motion.div>
