@@ -83,9 +83,11 @@ function Cart() {
               </p>
             </div>
 
-            <button className="w-full bg-blue-600 text-white py-3 rounded-lg mt-4 font-medium hover:bg-blue-700 transition cursor-pointer">
+            <Link to="/checkout"
+              className="block bg-blue-600 text-white py-3 rounded-lg text-center hover:bg-blue-700 transition mt-8 cursor-pointer"
+            >
               Proceed to Checkout
-            </button>
+            </Link>
           </div>
         )}
       </motion.div>

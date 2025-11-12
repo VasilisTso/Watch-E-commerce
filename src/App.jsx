@@ -6,6 +6,7 @@ import Home from "./pages/Home";
 import Shop from "./pages/Shop";
 import WatchDetails from "./pages/WatchDetails";
 import Cart from "./pages/Cart";
+import Checkout from './pages/Checkout';
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
         <Route path="shop" element={<Shop />} />
         <Route path="watch/:refOrId" element={<WatchDetails />} />
         <Route path="cart" element={<Cart />} />
+        <Route path="checkout" element={<Checkout />} />
       </Route>
     </Routes>
   )
