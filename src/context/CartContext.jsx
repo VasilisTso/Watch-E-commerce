@@ -54,14 +54,15 @@ export const CartProvider = ({ children }) => {
   }
 
   // adjust quantity
-  const updateQuantity = (id, delta) => {
+  const updateQuantity = (id, amount) => {
     setCartItems((prev) => 
       prev
         .map((item) => 
           item.id === id
-            ? { ...item, quantity: Math.max(1, item.quantity + delta)}
+            ? { ...item, quantity: item.quantity + amount }
             : item
         )
+        .filter(item => item.quantity > 0)
     )
   }
 

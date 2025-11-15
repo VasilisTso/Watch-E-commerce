@@ -34,7 +34,7 @@ function Checkout() {
 
     const subtotal = cartItems.reduce((sum, item) => {
         const numericPrice = parseFloat(item.price.replace(/,/g, "")) || 0;
-        return sum + numericPrice;
+        return sum + numericPrice * item.quantity;
     }, 0);
     const tax = subtotal * (0.24/(1+0.24));
     const total = subtotal  // + tax;
@@ -67,36 +67,77 @@ function Checkout() {
             setProcessing(false);
             setOrderPlaced(true);
             clearCart();
-            
-            // Navigate back to shop after success
-            setTimeout(() => navigate("/shop"), 3000);
         }, 2000);
     };
 
-    if (processing) {
-        return (
-            <div className="flex flex-col items-center justify-center h-80 space-y-4">
-                <div className="w-10 h-10 border-4 border-blue-600 border-t-transparent rounded-full animate-spin"></div>
-                <p className="text-gray-600">Processing your order...</p>
-            </div>
-        );
-    }
+    // Add redirect after order placed
+    const [countdown, setCountdown] = useState(5);
+
+    useEffect(() => {
+        if (orderPlaced) {
+            const timer = setInterval(() => {
+                setCountdown((prev) => {
+                    if (prev <= 1) {
+                        clearInterval(timer);
+                        return 0;
+                    }
+                    return prev - 1;
+                });
+            }, 1000);
+
+            return () => clearInterval(timer);
+        }
+    }, [orderPlaced]);
+
+    // Navigate when countdown reaches 0
+    useEffect(() => {
+        if (countdown === 0 && orderPlaced) {
+            navigate("/shop");
+        }
+    }, [countdown, orderPlaced, navigate]);
+
+    // order number generator
+    const orderNumberRef = React.useRef(
+        Math.floor(100000 + Math.random() * 900000)
+    );
+    const orderNumber = orderNumberRef.current;
 
     if (orderPlaced) {
         return (
-        <motion.div
-            initial={{ opacity: 0, y: 40 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="text-center py-20"
-        >
-            <h2 className="text-3xl font-bold text-green-600 mb-4">Order Placed!</h2>
-            <p className="text-gray-600">Thank you for your purchase.</p>
-        </motion.div>
+            <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-center py-20"
+            >
+                <div className="w-20 h-20 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4 animate-bounce">
+                    <span className="text-white text-4xl">✓</span>
+                </div>
+
+                <h2 className="text-3xl font-bold text-green-600 mb-2">
+                    Order Placed!
+                </h2>
+
+                <p className="text-gray-600 mb-4">
+                    Your order number is <span className="font-bold">#{orderNumber}</span>
+                </p>
+
+                <p className="text-gray-500">Redirecting to shop in {countdown}…</p>
+            </motion.div>
         );
     }
 
+    const LoadingOverlay = () => (
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex flex-col items-center justify-center z-50">
+            <div className="w-12 h-12 border-4 border-white border-t-transparent rounded-full animate-spin"></div>
+            <p className="text-white mt-4 text-lg">Processing payment…</p>
+        </div>
+    );
+
+
     return (
         <>
+            {processing && <LoadingOverlay />}
+
             <motion.div initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
             >
@@ -122,7 +163,6 @@ function Checkout() {
                             value={formData.name}
                             onChange={handleChange}
                             className="w-full border rounded-lg p-3"
-                            required
                         />
                         <input
                             name="email"
@@ -131,7 +171,6 @@ function Checkout() {
                             value={formData.email}
                             onChange={handleChange}
                             className="w-full border rounded-lg p-3"
-                            required
                         />
                         <textarea
                             name="address"
@@ -139,14 +178,12 @@ function Checkout() {
                             value={formData.address}
                             onChange={handleChange}
                             className="w-full border rounded-lg p-3 h-24"
-                            required
                         />
                         <select
                             name="payment"
                             value={formData.payment}
                             onChange={handleChange}
                             className="w-full border rounded-lg p-3"
-                            required
                         >
                             <option value="">Select Payment Method</option>
                             <option value="card">Credit / Debit Card</option>
@@ -163,21 +200,28 @@ function Checkout() {
                         <p className="text-gray-600">Your cart is empty.</p>
                     ) : (
                         <>
-                            <ul className="divide-y">
+                            <ul className="">
                                 {cartItems.map((item) => (
-                                    <li key={item.id} className="flex justify-between py-3">
+                                    <li key={item.id} className="flex justify-between items-center py-3">
                                         <div className="flex flex-col items-baseline justify-between">
-                                            <span className="text-lg text-gray-950">{item.brand}</span>
+                                            <div className="flex items-center gap-2">
+                                                <span className="text-gray-500">x{item.quantity}</span>
+                                                <span className="text-lg text-gray-950">{item.brand}</span>
+                                            </div>
                                             <span className="text text-gray-600">{item.model}</span>
                                         </div>
-                                        <span>{item.price} €</span>
+                                        <div className="flex flex-col items-baseline justify-between">
+                                            <span className="text-lg text-gray-950">
+                                                {(parseFloat(item.price.replace(/,/g, "")) * item.quantity).toLocaleString()} €
+                                            </span>
+                                        </div>
                                     </li>
                                 ))}
                             </ul>
                             <div className="border-t mt-4 pt-4 space-y-1">
                                 <p className="flex justify-between"><span>Price</span> <span>{subtotal.toLocaleString()} €</span></p>
                                 <p className="flex justify-between"><span>VAT Included (24%)</span> <span>{tax.toLocaleString()} €</span></p>
-                                <p className="flex justify-between font-bold text-lg border-t border-gray-400 pt-2 mt-2"><span>Total</span> <span>{total.toLocaleString()} €</span></p>
+                                <p className="flex justify-between font-bold text-lg border-t border-gray-300 pt-2 mt-2"><span>Total</span> <span>{total.toLocaleString()} €</span></p>
                             </div>
                         </>
                     )}
