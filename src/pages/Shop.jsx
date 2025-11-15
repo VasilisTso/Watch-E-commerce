@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import WatchCard from "../components/WatchCard";
 import { mockWatches } from "../data/mockWatches";
 import { motion } from "framer-motion"; // eslint-disable-line no-unused-vars
+import { label } from "framer-motion/client";
 
 function Shop() {
   const [watches, setWatches] = useState([]);
@@ -81,6 +82,107 @@ function Shop() {
 
   return (
     <>
+      <motion.div initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="grid grid-cols-1 lg:grid-cols-4 gap-8"
+      >
+        {/* sidebar */}
+        <aside className="lg:col-span-1 p-6 bg-white shadow-mf rounded-xl h-fit sticky top-4 space-y-6">
+          <h3 className="text-xl font-semibold mb-3">Filters</h3>
+
+          {/* brand filters */}
+          <div>
+            <p className="font-medium mb-2">Brand</p>
+            <div className="space-y-2">
+              {brands.map((b) => (
+                <label key={b} className="flex items-center gap-2">
+                  <input type="checkbox" 
+                    checked={filterBrand === b}
+                    onChange={() => 
+                      setFilterBrand(filterBrand === b ? "" : b)
+                    }
+                  />
+                  <span>{b}</span>
+                </label>
+              ))}
+            </div>
+          </div>
+
+          {/* MOVEMENT FILTER */}
+          <div>
+            <p className="font-medium mb-2">Movement</p>
+            <label className="flex items-center gap-2">
+              <input type="checkbox"
+                checked={filterMovement === "Automatic"}
+                onChange={() => 
+                  setFilterMovement(filterMovement === "Automatic" ? "" : "Automatic")
+                }
+              />
+              Automatic
+            </label>
+            <label className="flex items-center gap-2">
+            <input type="checkbox"
+              checked={filterMovement === "Battery"}
+              onChange={() =>
+                setFilterMovement(filterMovement === "Battery" ? "" : "Battery")
+              }
+            />
+            Battery
+          </label>
+          </div>
+
+          {/* PRICE SLIDER */}
+          <div>
+            <p>Max Price</p>
+            <input type="range" 
+              min="0"
+              max="1000000"
+              step="1000"
+              onChange={(e) => setPriceRange([0, Number(e.target.value)])}
+              className="w-full"
+            />
+            <span>
+              Up to: {priceRange[1].toLocaleString()} €
+            </span>
+          </div>
+
+          {/* SORT */}
+          <div>
+            <p className="font-medium mb-2">Sort</p>
+            
+          </div>
+
+          {/* RESET */}
+          <div>
+            <button>
+              Reset Filters
+            </button>
+          </div>
+        </aside>
+
+        {/* WATCHES GRID */}
+        <section>
+          <h2>Shop Watches</h2>
+
+
+        </section>
+      </motion.div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       <motion.div initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}

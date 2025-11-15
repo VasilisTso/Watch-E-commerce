@@ -44,7 +44,7 @@ function WatchCard({ watch }) {
                         whileHover={{ opacity: 1 }}
                         transition={{ duration: 0.3 }}
                     >
-                        ${watch.price}
+                        {watch.price} €
                     </motion.p>
                 )}
             </div>

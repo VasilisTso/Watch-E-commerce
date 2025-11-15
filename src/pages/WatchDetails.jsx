@@ -106,7 +106,7 @@ function WatchDetails() {
               <p><strong>Description:</strong> {watch.description}</p>
             </div>
             
-            <p className="text-blue-600 font-bold text-xl mt-10">{watch.price ? `$${watch.price}` : "Price unavailable"}</p>
+            <p className="text-blue-600 font-bold text-xl mt-10">{watch.price ? `${watch.price} €` : "Price unavailable"}</p>
           
             <button
               onClick={handleBuyNow}

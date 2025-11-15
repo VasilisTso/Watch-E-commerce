@@ -84,7 +84,7 @@ function Cart() {
                 </div>
 
                 <div className="mt-4 md:mt-0 text-center">
-                  <p className="font-bold text-blue-600">${item.price}</p>
+                  <p className="font-bold text-blue-600">{item.price} €</p>
                   
                   {/* Quantity controls */}
                   <div className="flex items-center gap-3 mt-2 mb-2">
@@ -116,7 +116,7 @@ function Cart() {
             <div className="flex justify-between items-center pt-6">
               <p className="text-lg font-semibold">Subtotal</p>
               <p className="text-lg font-bold text-blue-600">
-                ${subtotal.toLocaleString()}
+                {subtotal.toLocaleString()} €
               </p>
             </div>
 
