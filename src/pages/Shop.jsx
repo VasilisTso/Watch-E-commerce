@@ -9,9 +9,22 @@ function Shop() {
   const [brands, setBrands] = useState([]);
   const [filterBrand, setFilterBrand] = useState("");
   const [filterMovement, setFilterMovement] = useState("");
-  const [priceRange, setPriceRange] = useState([0, Infinity]);
+  const [priceRange, setPriceRange] = useState([0, 2000000]);
   const [sortOrder, setSortOrder] = useState("");// e.g., "priceAsc", "priceDesc"
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+
+  // brand filter
+  const [brandSearch, setBrandSearch] = useState("");
+  const [brandExpanded, setBrandExpanded] = useState(false); // collapsed by default
+
+  const filteredBrandsList = brands.filter(b =>
+    b.toLowerCase().includes(brandSearch.toLowerCase())
+  );
+
+  // When collapsed, show only first 4
+  const visibleBrands = brandExpanded
+    ? filteredBrandsList
+    : filteredBrandsList.slice(0, 4);
 
 
   const token = import.meta.env.VITE_WATCH_API_TOKEN;
@@ -28,13 +41,15 @@ function Shop() {
         setFiltered(json.data);
   
         // derive unique brands
-        const uniqueBrands = Array.from(new Set(json.data.map(w => w.brand)));
+        const uniqueBrands = Array.from(new Set(json.data.map(w => w.brand)))
+          .sort((a, b) => a.localeCompare(b));
         setBrands(uniqueBrands);
       } catch(err) {
       console.error("API fetch failed, using mock data", err);
       setWatches(mockWatches);
       setFiltered(mockWatches);
-      const uniqueBrands = Array.from(new Set(mockWatches.map(w => w.brand)));
+      const uniqueBrands = Array.from(new Set(mockWatches.map(w => w.brand)))
+        .sort((a, b) => a.localeCompare(b));
       setBrands(uniqueBrands);
       }
     }
@@ -68,7 +83,7 @@ function Shop() {
     data = data.filter((w) => {
       const price = parsePrice(w.price);
       const [min, max] = priceRange;
-      return price >= min && price <= (max || Infinity);
+      return price >= min && price <= max;
     });
 
     // sorting
@@ -94,8 +109,17 @@ function Shop() {
           {/* brand filters */}
           <div>
             <p className="font-medium mb-2">Brand</p>
+
+            {/* Search Input */}
+            <input
+              type="text"
+              placeholder="Search brand"
+              value={brandSearch}
+              onChange={(e) => setBrandSearch(e.target.value)}
+              className="w-full mb-2 px-3 py-2 border rounded-lg"
+            />
             <div className="space-y-2">
-              {brands.map((b) => (
+              {visibleBrands.map((b) => (
                 <label key={b} className="flex items-center gap-2">
                   <input type="checkbox" 
                     checked={filterBrand === b}
@@ -107,6 +131,14 @@ function Shop() {
                 </label>
               ))}
             </div>
+            {/* Show more / Show less */}
+            {filteredBrandsList.length > 4 && (
+              <button onClick={() => setBrandExpanded(!brandExpanded)}
+                className="text-blue-600 mt-2 text-sm cursor-pointer"
+              >
+                {brandExpanded ? "Show Less" : "Show More"}
+              </button>
+            )}
           </div>
 
           {/* MOVEMENT FILTER */}
@@ -134,16 +166,44 @@ function Shop() {
 
           {/* PRICE SLIDER */}
           <div>
-            <p className="font-medium mb-2">Max Price</p>
+            <p className="font-medium mb-2">Price Range</p>
+            {/* MIN & MAX Inputs */}
+            <div className="flex items-center gap-3 mb-3">
+              <input
+                type="number"
+                value={priceRange[0]}
+                min={0}
+                onChange={(e) =>
+                  setPriceRange([Number(e.target.value) || 0, priceRange[1]])
+                }
+                className="w-24 px-2 py-1 border rounded"
+                placeholder="Min"
+              />
+              <span>-</span>
+              <input
+                type="number"
+                value={priceRange[1] === Infinity ? "" : priceRange[1]}
+                min={0}
+                onChange={(e) =>
+                  setPriceRange([priceRange[0], Number(e.target.value) || Infinity])
+                }
+                className="w-24 px-2 py-1 border rounded"
+                placeholder="Max"
+              />
+            </div>
+
+            {/* Slider - controls MAX only */}
             <input type="range" 
               min="0"
-              max="1000000"
+              max="2000000"
               step="1000"
-              onChange={(e) => setPriceRange([0, Number(e.target.value)])}
+              value={priceRange[1] === Infinity ? 2000000 : priceRange[1]}
+              onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value) || Infinity])}
               className="w-full"
             />
+            {/* Display Value */}
             <span className="text-gray-700 block mt-1">
-              Up to: {priceRange[1].toLocaleString()} €
+              Up to: {priceRange[1] === Infinity ? "∞" : priceRange[1].toLocaleString()} €
             </span>
           </div>
 
@@ -199,8 +259,16 @@ function Shop() {
               {/* brand filters */}
               <div>
                 <p className="font-medium mb-2">Brand</p>
+                {/* Search Input */}
+                <input
+                  type="text"
+                  placeholder="Search brands…"
+                  value={brandSearch}
+                  onChange={(e) => setBrandSearch(e.target.value)}
+                  className="w-full mb-2 px-3 py-2 border rounded"
+                />
                 <div className="space-y-2">
-                  {brands.map((b) => (
+                  {visibleBrands.map((b) => (
                     <label key={b} className="flex items-center gap-2">
                       <input type="checkbox" 
                         checked={filterBrand === b}
@@ -212,6 +280,15 @@ function Shop() {
                     </label>
                   ))}
                 </div>
+                {/* Show more / Show less */}
+                {filteredBrandsList.length > 4 && (
+                  <button
+                    onClick={() => setBrandExpanded(!brandExpanded)}
+                    className="text-blue-600 mt-2 text-sm cursor-pointer"
+                  >
+                    {brandExpanded ? "Show Less" : "Show More"}
+                  </button>
+                )}
               </div>
 
               {/* MOVEMENT FILTER */}

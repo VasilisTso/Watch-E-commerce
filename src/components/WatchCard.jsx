@@ -5,7 +5,7 @@ import { motion } from "framer-motion"; // eslint-disable-line no-unused-vars
 function WatchCard({ watch }) {
     // assuming `watch` has { id, brand, model, movement, image, price }
     return (
-        <Link to={`/watch/${watch.reference_number || watch.id}`} className="block border rounded-lg hover:shadow-lg transition-shadow">
+        <Link to={`/watch/${watch.reference_number || watch.id}`} className="block border border-gray-300 rounded-lg hover:shadow-2xl hover:scale-101 transition-all duration-300">
             <img src={watch.image || "https://via.placeholder.com/300x300?text=No+Image"} 
                 alt={`${watch.brand} ${watch.model}`}
                 className="inline-flex items-center hover:scale-105 transition-transform duration-500 px-8 my-8 w-64 h-64 object-cover"

@@ -5,7 +5,7 @@ import { motion } from "framer-motion"; // eslint-disable-line no-unused-vars
 import { useNavigate } from "react-router-dom";
 
 function Checkout() {
-    const { cartItems, clearCartItems } = useCart();
+    const { cartItems, clearCart } = useCart();
     const [formData, setFormData] = useState(() => {
         try {
             return JSON.parse(localStorage.getItem("checkoutForm")) || {
@@ -36,8 +36,8 @@ function Checkout() {
         const numericPrice = parseFloat(item.price.replace(/,/g, "")) || 0;
         return sum + numericPrice;
     }, 0);
-    const tax = subtotal * 0.00; //tax already added else for 24% * 0.24
-    const total = subtotal  + tax;
+    const tax = subtotal * (0.24/(1+0.24));
+    const total = subtotal  // + tax;
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -66,7 +66,7 @@ function Checkout() {
         setTimeout(() => {
             setProcessing(false);
             setOrderPlaced(true);
-            clearCartItems();
+            clearCart();
             
             // Navigate back to shop after success
             setTimeout(() => navigate("/shop"), 3000);
@@ -166,16 +166,18 @@ function Checkout() {
                             <ul className="divide-y">
                                 {cartItems.map((item) => (
                                     <li key={item.id} className="flex justify-between py-3">
-                                        <span>{item.brand}</span>
-                                        <span>{item.model}</span>
+                                        <div className="flex flex-col items-baseline justify-between">
+                                            <span className="text-lg text-gray-950">{item.brand}</span>
+                                            <span className="text text-gray-600">{item.model}</span>
+                                        </div>
                                         <span>{item.price} €</span>
                                     </li>
                                 ))}
                             </ul>
                             <div className="border-t mt-4 pt-4 space-y-1">
-                                <p className="flex justify-between"><span>Subtotal</span> <span>{subtotal.toLocaleString()} €</span></p>
-                                <p className="flex justify-between"><span>Tax (24%)</span> <span>Already Added{/* {tax.toLocaleString()} € */}</span></p>
-                                <p className="flex justify-between font-bold text-lg"><span>Total</span> <span>{total.toLocaleString()} €</span></p>
+                                <p className="flex justify-between"><span>Price</span> <span>{subtotal.toLocaleString()} €</span></p>
+                                <p className="flex justify-between"><span>VAT Included (24%)</span> <span>{tax.toLocaleString()} €</span></p>
+                                <p className="flex justify-between font-bold text-lg border-t border-gray-400 pt-2 mt-2"><span>Total</span> <span>{total.toLocaleString()} €</span></p>
                             </div>
                         </>
                     )}

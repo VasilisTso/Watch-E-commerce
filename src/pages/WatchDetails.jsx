@@ -89,7 +89,7 @@ function WatchDetails() {
             <img
               src={watch.image || "https://via.placeholder.com/500x500?text=No+Image"}
               alt={`${watch.brand} ${watch.model}`}
-              className="w-full object-cover rounded-4xl shadow-md px-2 py-2"
+              className="w-full object-cover rounded-4xl px-2 py-2"
             />
           </div>
 
