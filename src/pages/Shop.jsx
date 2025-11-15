@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import WatchCard from "../components/WatchCard";
 import { mockWatches } from "../data/mockWatches";
 import { motion } from "framer-motion"; // eslint-disable-line no-unused-vars
-import { label } from "framer-motion/client";
 
 function Shop() {
   const [watches, setWatches] = useState([]);
@@ -12,6 +11,8 @@ function Shop() {
   const [filterMovement, setFilterMovement] = useState("");
   const [priceRange, setPriceRange] = useState([0, Infinity]);
   const [sortOrder, setSortOrder] = useState("");// e.g., "priceAsc", "priceDesc"
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
+
 
   const token = import.meta.env.VITE_WATCH_API_TOKEN;
   const baseUrl = import.meta.env.VITE_WATCH_API_BASE_URL;
@@ -87,10 +88,9 @@ function Shop() {
         transition={{ duration: 0.6, ease: "easeOut" }}
         className="grid grid-cols-1 lg:grid-cols-4 gap-8"
       >
-        {/* sidebar */}
-        <aside className="lg:col-span-1 p-6 bg-white shadow-mf rounded-xl h-fit sticky top-4 space-y-6">
+        {/* sidebar(Desktop) */}
+        <aside className="hidden lg:block lg:col-span-1 p-6 bg-white shadow-mf rounded-xl h-fit sticky top-4 space-y-6 border-r border-gray-200">
           <h3 className="text-xl font-semibold mb-3">Filters</h3>
-
           {/* brand filters */}
           <div>
             <p className="font-medium mb-2">Brand</p>
@@ -134,7 +134,7 @@ function Shop() {
 
           {/* PRICE SLIDER */}
           <div>
-            <p>Max Price</p>
+            <p className="font-medium mb-2">Max Price</p>
             <input type="range" 
               min="0"
               max="1000000"
@@ -142,7 +142,7 @@ function Shop() {
               onChange={(e) => setPriceRange([0, Number(e.target.value)])}
               className="w-full"
             />
-            <span>
+            <span className="text-gray-700 block mt-1">
               Up to: {priceRange[1].toLocaleString()} €
             </span>
           </div>
@@ -150,91 +150,160 @@ function Shop() {
           {/* SORT */}
           <div>
             <p className="font-medium mb-2">Sort</p>
-            
+            <select value={sortOrder}
+              onChange={(e) => setSortOrder(e.target.value)}
+              className="border px-3 py-2 rounded w-full"
+            >
+              <option value="">None</option>
+              <option value="priceAsc">Price: Low → High</option>
+              <option value="priceDesc">Price: High → Low</option>
+            </select>
           </div>
 
           {/* RESET */}
-          <div>
-            <button>
-              Reset Filters
-            </button>
-          </div>
+          <button className="mt-4 w-full bg-gray-200 hover:bg-gray-300 transition px-4 py-2 rounded-lg"
+            onClick={() => {
+              setFilterBrand("");
+              setFilterMovement("");
+              setPriceRange([0, Infinity]);
+              setSortOrder("");
+            }}
+          >
+            Reset Filters
+          </button>
         </aside>
 
+        {/* MOBILE FILTER DRAWER */}
+        {isFilterOpen && (
+          <motion.div initial={{ x: "-100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "-100%" }}
+            transition={{ duration: 0.1 }}
+            className="fixed inset-0 bg-black/20 backdrop-blur-xs z-40 flex"
+            onClick={() => setIsFilterOpen(false)} // close when backdrop clicked
+          >
+            <div
+              onClick={(e) => e.stopPropagation()} // prevent closing when clicking panel
+              className="w-72 max-w-full bg-white h-full p-6 overflow-y-auto shadow-xl space-y-6"
+            >
+              <div className="flex justify-between items-center">
+                <h3 className="text-xl font-semibold">Filters</h3>
+                <button
+                  onClick={() => setIsFilterOpen(false)}
+                  className="text-gray-600 text-lg"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* brand filters */}
+              <div>
+                <p className="font-medium mb-2">Brand</p>
+                <div className="space-y-2">
+                  {brands.map((b) => (
+                    <label key={b} className="flex items-center gap-2">
+                      <input type="checkbox" 
+                        checked={filterBrand === b}
+                        onChange={() => 
+                          setFilterBrand(filterBrand === b ? "" : b)
+                        }
+                      />
+                      <span>{b}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* MOVEMENT FILTER */}
+              <div>
+                <p className="font-medium mb-2">Movement</p>
+                <label className="flex items-center gap-2">
+                  <input type="checkbox"
+                    checked={filterMovement === "Automatic"}
+                    onChange={() => 
+                      setFilterMovement(filterMovement === "Automatic" ? "" : "Automatic")
+                    }
+                  />
+                  Automatic
+                </label>
+                <label className="flex items-center gap-2">
+                <input type="checkbox"
+                  checked={filterMovement === "Battery"}
+                  onChange={() =>
+                    setFilterMovement(filterMovement === "Battery" ? "" : "Battery")
+                  }
+                />
+                Battery
+              </label>
+              </div>
+
+              {/* PRICE SLIDER */}
+              <div>
+                <p className="font-medium mb-2">Max Price</p>
+                <input type="range" 
+                  min="0"
+                  max="1000000"
+                  step="1000"
+                  onChange={(e) => setPriceRange([0, Number(e.target.value)])}
+                  className="w-full"
+                />
+                <span className="text-gray-700 block mt-1">
+                  Up to: {priceRange[1].toLocaleString()} €
+                </span>
+              </div>
+
+              {/* SORT */}
+              <div>
+                <p className="font-medium mb-2">Sort</p>
+                <select value={sortOrder}
+                  onChange={(e) => setSortOrder(e.target.value)}
+                  className="border px-3 py-2 rounded w-full"
+                >
+                  <option value="">None</option>
+                  <option value="priceAsc">Price: Low → High</option>
+                  <option value="priceDesc">Price: High → Low</option>
+                </select>
+              </div>
+
+              {/* RESET */}
+              <button className="mt-4 w-full bg-gray-200 hover:bg-gray-300 transition px-4 py-2 rounded-lg"
+                onClick={() => {
+                  setFilterBrand("");
+                  setFilterMovement("");
+                  setPriceRange([0, Infinity]);
+                  setSortOrder("");
+                }}
+              >
+                Reset Filters
+              </button>
+            </div>
+          </motion.div>
+        )}
+
+        {/* MOBILE FILTER BUTTON */}
+        <div className="lg:hidden flex justify-end mb-4">
+          <button
+            onClick={() => setIsFilterOpen(true)}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
+          >
+            Filters
+          </button>
+        </div>
+
         {/* WATCHES GRID */}
-        <section>
-          <h2>Shop Watches</h2>
+        <section className="lg:col-span-3">
+          <h2 className="text-2xl font-semibold mb-4">Shop Watches</h2>
 
+          {filtered.length === 0 && (
+            <p className="text-gray-500 text-lg mt-10">No watches found for your filters.</p>
+          )}
 
-        </section>
-      </motion.div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      <motion.div initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-      >
-        <h2 className="text-2xl font-semibold mb-4">Shop Watches</h2>
-
-        {/* Filters Section */}
-        <div className="flex flex-wrap gap-4 border-t border-gray-400 py-6">
-          <select value={filterBrand}
-            onChange={e => setFilterBrand(e.target.value)}
-            className="border px-3 py-2 rounded"
-          >
-            <option value="">All Brands</option>
-            {brands.map((b) => (
-              <option key={b} value={b}>{b}</option>
+          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filtered.map((watch) => (
+              <WatchCard key={watch.id} watch={watch} />
             ))}
-          </select>
-
-          <select value={filterMovement}
-            onChange={e => setFilterMovement(e.target.value)}
-            className="border px-3 py-2 rounded"
-          >
-            <option value="">All Movements</option>
-            <option value="Automatic">Automatic</option>
-            <option value="Battery">Battery</option>
-          </select>
-
-          <label className="flex items-center">
-            Price up to:
-            <input type="number" 
-              placeholder="Max"
-              onChange={e => setPriceRange([0, Number(e.target.value) || Infinity])}
-              className="border px-3 py-2 rounded ml-2"
-            />
-          </label>
-
-          <select value={sortOrder}
-            onChange={e => setSortOrder(e.target.value)}
-            className="border px-3 py-2 rounded"
-          >
-            <option value="">Sort By</option>
-            <option value="priceAsc">Price: Low → High</option>
-            <option value="priceDesc">Price: High → Low</option>
-          </select>
-        </div>
-
-        {/* Results Grid */}
-        <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filtered.map(watch => (
-            <WatchCard key={watch.id} watch={watch} />
-          ))}
-        </div>
+          </div>
+        </section>
       </motion.div>
     </>
   )
