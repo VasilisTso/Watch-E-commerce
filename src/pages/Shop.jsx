@@ -74,9 +74,13 @@ function Shop() {
 
     // movement filter
     if (filterMovement && filterMovement !== "") {
-      data = data.filter(
-        (w) => w.movement?.toLowerCase() === filterMovement.toLowerCase()
-      );
+      data = data.filter((w) => {
+        if (filterMovement === "Battery") {
+          // treat Quartz as Battery
+          return w.movement?.toLowerCase() === "battery" || w.movement?.toLowerCase() === "quartz";
+        }
+        return w.movement?.toLowerCase() === filterMovement.toLowerCase();
+      });
     }
 
     // price range filter
