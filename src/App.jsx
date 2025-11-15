@@ -1,6 +1,7 @@
 import React from 'react'
 import './App.css'
 import { Routes, Route } from "react-router-dom";
+import { Toaster } from "react-hot-toast";
 import MainLayout from "./layout/MainLayout";
 import Home from "./pages/Home";
 import Shop from "./pages/Shop";
@@ -11,16 +12,19 @@ import Checkout from './pages/Checkout';
 function App() {
 
   return (
-    <Routes>
-      {/* MainLayout wraps all pages with Navbar & Footer */}
-      <Route path='/' element={<MainLayout/>}>
-        <Route index element={<Home />} />
-        <Route path="shop" element={<Shop />} />
-        <Route path="watch/:refOrId" element={<WatchDetails />} />
-        <Route path="cart" element={<Cart />} />
-        <Route path="checkout" element={<Checkout />} />
-      </Route>
-    </Routes>
+    <>
+      <Toaster position="top-right" />
+      <Routes>
+        {/* MainLayout wraps all pages with Navbar & Footer */}
+        <Route path='/' element={<MainLayout/>}>
+          <Route index element={<Home />} />
+          <Route path="shop" element={<Shop />} />
+          <Route path="watch/:refOrId" element={<WatchDetails />} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="checkout" element={<Checkout />} />
+        </Route>
+      </Routes>
+    </>
   )
 }
 

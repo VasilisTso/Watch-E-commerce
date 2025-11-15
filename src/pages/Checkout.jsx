@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useCart } from "../context/CartContext";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion"; // eslint-disable-line no-unused-vars
@@ -6,12 +6,29 @@ import { useNavigate } from "react-router-dom";
 
 function Checkout() {
     const { cartItems, clearCartItems } = useCart();
-    const [formData, setFormData] = useState({
-        name: "",
-        email: "",
-        address: "",
-        payment: "",
+    const [formData, setFormData] = useState(() => {
+        try {
+            return JSON.parse(localStorage.getItem("checkoutForm")) || {
+                name: "",
+                email: "",
+                address: "",
+                payment: "",
+            }
+        } catch {
+            return {
+                name: "",
+                email: "",
+                address: "",
+                payment: "",
+            }
+        } 
     });
+
+    // save from
+    useEffect(() => {
+        localStorage.setItem("checkoutForm", JSON.stringify(formData));
+    }, [formData])
+
     const [orderPlaced, setOrderPlaced] = useState(false);
     const navigate = useNavigate();
 
