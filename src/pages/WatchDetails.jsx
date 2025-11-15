@@ -22,6 +22,10 @@ function WatchDetails() {
     navigate("/cart");
   };
 
+  const handleAddToCart = () => {
+    addToCart(watch);
+  };
+
   useEffect(() => {
     async function fetchWatch() {
       try {
@@ -107,13 +111,21 @@ function WatchDetails() {
             </div>
             
             <p className="text-blue-600 font-bold text-xl mt-10">{watch.price ? `${watch.price} €` : "Price unavailable"}</p>
-          
-            <button
-              onClick={handleBuyNow}
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg mt-2 font-medium hover:bg-blue-700 transition cursor-pointer"
-            >
-              Buy Now
-            </button>
+
+            <div className="flex flex-col gap-4 mt-10">
+              <button
+                onClick={handleAddToCart}
+                className="bg-gray-200 text-gray-800 px-6 py-3 rounded-lg font-medium hover:bg-gray-300 transition cursor-pointer"
+              >
+                Add to Cart
+              </button>
+              <button
+                onClick={handleBuyNow}
+                className="bg-blue-600 text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-700 transition cursor-pointer"
+              >
+                Buy Now
+              </button>
+            </div>
           </div>
         </div>
       </motion.div>

@@ -35,10 +35,10 @@ export const CartProvider = ({ children }) => {
             : item
         );
       }
-
-      toast.success("Added to cart")
+  
       return [...prev, { ...watch, quantity: 1 }];
     });
+    toast.success("Added to cart")
   };
 
   // Remove item
