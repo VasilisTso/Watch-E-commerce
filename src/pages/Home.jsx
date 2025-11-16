@@ -62,9 +62,11 @@ function Home() {
         </div>
       </motion.section>
 
+      {/* FEATURED BRANDS */}
       <motion.section className='w-full bg-gray-100 py-14 px-6'
         initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.8 }}
       >
         <h2 className="text-3xl font-semibold text-center mb-10">
@@ -152,7 +154,8 @@ function Home() {
       <motion.section
         className="w-full max-w-6xl px-6 py-16"
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.3 }}
         transition={{ delay: 0.5, duration: 1 }}
       >
         <h2 className='text-3xl font-semibold text-center mb-10'>
