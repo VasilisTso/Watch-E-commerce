@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import WatchCard from "../components/WatchCard";
+import { Link } from "react-router-dom";
 import { mockWatches } from "../data/mockWatches";
 import { motion } from "framer-motion"; // eslint-disable-line no-unused-vars
 
@@ -116,6 +117,19 @@ function Shop() {
 
   return (
     <>
+      <motion.div className="max-w-5xl mx-auto p-2 md:p-4 text-left"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+      >
+        <div className="text-sm text-gray-500">
+          <Link to="/" className="hover:underline text-blue-600">
+            Home
+          </Link>{" "}
+          / <span className="text-gray-700">Shop</span>
+        </div>
+      </motion.div>
+
       <motion.div initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}
@@ -387,6 +401,12 @@ function Shop() {
 
         {/* WATCHES GRID */}
         <section className="lg:col-span-3">
+          {/* RESULTS COUNT */}
+          <p className="text-gray-600 mb-4">
+            Showing <span className="text-lg font-semibold">{filtered.length}</span> of{" "}
+            <span className="text-lg font-semibold">{watches.length}</span> watches
+          </p>
+          
           <h2 className="text-2xl font-semibold mb-4">Shop Watches</h2>
 
           {filtered.length === 0 && (
