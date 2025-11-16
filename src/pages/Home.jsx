@@ -1,7 +1,10 @@
 import React from 'react'
 import { motion } from "framer-motion"; // eslint-disable-line no-unused-vars
 import { Link } from "react-router-dom";
-import { mockWatches } from "../data/mockWatches"; 
+import { mockWatches } from "../data/mockWatches";
+import { GiWatch } from "react-icons/gi";
+import { RiSecurePaymentFill } from "react-icons/ri";
+import { FaShippingFast } from "react-icons/fa";
 
 function Home() {
   const featured = mockWatches.slice(0, 4)
@@ -59,6 +62,92 @@ function Home() {
         </div>
       </motion.section>
 
+      <motion.section className='w-full bg-gray-100 py-14 px-6'
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+      >
+        <h2 className="text-3xl font-semibold text-center mb-10">
+          Featured Brands
+        </h2>
+
+        <div className='flex flex-wrap justify-center items-center gap-10 opacity-90'>
+          {/* Rolex */}
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Logo_da_Rolex.png/1200px-Logo_da_Rolex.png"
+            alt="Rolex"
+            className="h-18 grayscale-70 hover:grayscale-0 transition duration-300"
+          />
+
+          {/* Audemars Piguet */}
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/7/7c/Audemars_Piguet_logo.png"
+            alt="Audemars Piguet"
+            className="h-14 grayscale-70 hover:grayscale-0 transition duration-300"
+          />
+
+          {/* Patek Philippe */}
+          <img
+            src="https://upload.wikimedia.org/wikipedia/en/thumb/c/c2/Patek_Philippe_SA_logo.svg/1200px-Patek_Philippe_SA_logo.svg.png"
+            alt="Patek Philippe"
+            className="h-18 grayscale-70 hover:grayscale-0 transition duration-300"
+          />
+
+          {/* Richard Mille */}
+          <img
+            src="https://brandlogos.net/wp-content/uploads/2025/02/richard_mille-logo_brandlogos.net_fbdmr-512x512.png"
+            alt="Richard Mille"
+            className="h-42 grayscale-70 hover:grayscale-0 transition duration-300"
+          />
+
+          {/* Omega */}
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fb/Omega_Logo.svg/1200px-Omega_Logo.svg.png"
+            alt="Omega"
+            className="h-12 grayscale-70 hover:grayscale-0 transition duration-300"
+          />
+
+          {/* TAG Heuer */}
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/TAG_Heuer_Logo.svg/1200px-TAG_Heuer_Logo.svg.png"
+            alt="TAG Heuer"
+            className="h-14 grayscale-70 hover:grayscale-0 transition duration-300"
+          />
+
+          {/* Tissot */}
+          <img
+            src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ce/Tissot_Logo.svg/2560px-Tissot_Logo.svg.png"
+            alt="Tissot"
+            className="h-12 grayscale-70 hover:grayscale-0 transition duration-300"
+          />
+        </div>
+      </motion.section>
+
+      {/* PARALLAX LUXURY BANNER */}
+      <section className="relative w-full h-[50vh] my-20 overflow-hidden">
+        <div
+          className="absolute inset-0 bg-fixed bg-center bg-cover"
+          style={{
+            backgroundImage:
+              "url('https://www.bobswatches.com/rolex-blog/wp-content/uploads/2022/01/Rolex-vs-Patek-Banner.jpg')",
+          }}
+        ></div>
+
+        {/* Dark overlay */}
+        <div className="absolute inset-0 bg-black/50"></div>
+
+        {/* Text */}
+        <div className="relative z-10 flex flex-col justify-center items-center h-full text-center text-white px-6">
+          <h2 className="text-4xl md:text-5xl font-bold tracking-wide">
+            Timeless Luxury
+          </h2>
+          <p className="mt-4 text-lg max-w-xl text-gray-200">
+            Experience craftsmanship that transcends generations. Only the finest
+            curated timepieces.
+          </p>
+        </div>
+      </section>
+
       {/* FEATURED WATCHES */}
       <motion.section
         className="w-full max-w-6xl px-6 py-16"
@@ -74,7 +163,7 @@ function Home() {
           {featured.map((watch) => (
             <Link to={`/watch/${watch.reference_number}`}
               key={watch.id}
-              className='group relative border rounded-2xl overflow-hidden shadow-sm transition-transform transform hover:-translate-y-2 hover:shadow-xl duration-500'
+              className='group relative border border-gray-300 rounded-2xl overflow-hidden shadow-sm transition-transform transform hover:-translate-y-2 hover:shadow-xl duration-500'
             >
               {/* Image */}
               <div className="aspect-square overflow-hidden flex justify-center items-center">
@@ -115,6 +204,48 @@ function Home() {
           ))}
         </div>
       </motion.section>
+
+      {/* WHY CHOOSE US */}
+      <section className='w-full max-w-6xl mx-auto py-20 px-6'>
+        <h2 className='text-3xl font-semibold text-center mb-14'>
+          Why Choose Us
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
+          {/* Badge 1 */}
+          <div className="flex flex-col items-center">
+            <div className="w-20 h-20 flex items-center justify-center rounded-full bg-gray-100 shadow-md mb-4">
+              <span className="text-3xl"><GiWatch /></span>
+            </div>
+            <h3 className="text-xl font-semibold mb-2">Authentic Timepieces</h3>
+            <p className="text-gray-600 max-w-xs">
+              Every watch in our collection is verified for authenticity and quality.
+            </p>
+          </div>
+
+          {/* Badge 2 */}
+          <div className="flex flex-col items-center">
+            <div className="w-20 h-20 flex items-center justify-center rounded-full bg-gray-100 shadow-md mb-4">
+              <span className="text-3xl"><RiSecurePaymentFill /></span>
+            </div>
+            <h3 className="text-xl font-semibold mb-2">Secure Shopping</h3>
+            <p className="text-gray-600 max-w-xs">
+              Your data and transactions are protected with industry-leading security.
+            </p>
+          </div>
+
+          {/* Badge 3 */}
+          <div className="flex flex-col items-center">
+            <div className="w-20 h-20 flex items-center justify-center rounded-full bg-gray-100 shadow-md mb-4">
+              <span className="text-3xl"><FaShippingFast /></span>
+            </div>
+            <h3 className="text-xl font-semibold mb-2">Fast & Insured Shipping</h3>
+            <p className="text-gray-600 max-w-xs">
+              We deliver your timepiece safely and quickly, fully insured end-to-end.
+            </p>
+          </div>
+        </div>
+      </section>
     </div>
   )
 }
