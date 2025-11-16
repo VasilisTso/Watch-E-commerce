@@ -13,6 +13,11 @@ function Shop() {
   const [sortOrder, setSortOrder] = useState("");// e.g., "priceAsc", "priceDesc"
   const [isFilterOpen, setIsFilterOpen] = useState(false);
 
+  // pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 9;
+
+
   // brand filter
   const [brandSearch, setBrandSearch] = useState("");
   const [brandExpanded, setBrandExpanded] = useState(false); // collapsed by default
@@ -39,6 +44,8 @@ function Shop() {
         // For simplicity: assume we get full watch objects with our fields
         setWatches(json.data);
         setFiltered(json.data);
+        // pagination, filtered list always starts from page 1
+        setCurrentPage(1);
   
         // derive unique brands
         const uniqueBrands = Array.from(new Set(json.data.map(w => w.brand)))
@@ -97,8 +104,15 @@ function Shop() {
       data.sort((a, b) => parsePrice(b.price) - parsePrice(a.price));
     }
 
+
     setFiltered(data);
   }, [watches, filterBrand, filterMovement, priceRange, sortOrder]);
+
+  // pagination logic
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const paginatedData = filtered.slice(indexOfFirstItem, indexOfLastItem);
+  const totalPages = Math.ceil(filtered.length / itemsPerPage);
 
   return (
     <>
@@ -380,10 +394,30 @@ function Shop() {
           )}
 
           <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filtered.map((watch) => (
+            {/* was originally filtered but replaced for pagination */}
+            {paginatedData.map((watch) => (
               <WatchCard key={watch.id} watch={watch} />
             ))}
           </div>
+
+          {/* PAGINATION BUTTONS */}
+          {totalPages > 1 && (
+            <div className="flex justify-center mt-8 gap-2">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
+                <button
+                  key={num}
+                  onClick={() => setCurrentPage(num)}
+                  className={`px-4 py-2 rounded-lg border transition cursor-pointer ${
+                    currentPage === num
+                      ? "bg-blue-600 text-white"
+                      : "bg-white hover:bg-gray-300"
+                  }`}
+                >
+                  {num}
+                </button>
+              ))}
+            </div>
+          )}
         </section>
       </motion.div>
     </>

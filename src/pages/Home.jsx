@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { mockWatches } from "../data/mockWatches"; 
 
 function Home() {
-  const featured = mockWatches.slice(0, 3)
+  const featured = mockWatches.slice(0, 4)
 
   return (
     <div className='flex flex-col items-center'>
@@ -70,7 +70,7 @@ function Home() {
           Featured Watches
         </h2>
 
-        <div className='grid gap-8 sm:grid-cols lg:grid-cols-3'>
+        <div className='grid gap-8 sm:grid-cols lg:grid-cols-4'>
           {featured.map((watch) => (
             <Link to={`/watch/${watch.reference_number}`}
               key={watch.id}
