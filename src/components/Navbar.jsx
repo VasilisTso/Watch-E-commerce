@@ -29,8 +29,8 @@ function Navbar() {
     }, []);
 
   return (
-    <motion.nav className='fixed top-0 left-0 mx-auto w-full z-50 bg-white shadow-sm'
-        animate={{ y: hidden ? -80 : 0 }}
+    <nav className='fixed top-0 left-0 mx-auto w-full z-50 bg-white shadow-sm mb-28'
+        animate={{ y: hidden ? -100 : 0 }}
         transition={{ duration: 0.3 }}
     >
         <div className='max-w-7xl mx-auto px-4 py-6 flex items-center justify-between'>
@@ -154,7 +154,7 @@ function Navbar() {
                 </>
             )}
         </AnimatePresence>
-    </motion.nav>
+    </nav>
   )
 }
 

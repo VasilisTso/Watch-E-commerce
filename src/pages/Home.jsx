@@ -12,7 +12,7 @@ function Home() {
   return (
     <div className='flex flex-col items-center'>
       {/* HERO SECTION */}
-      <motion.section className="relative w-full h-[90vh] flex flex-col justify-center items-left text-center text-white overflow-hidden"
+      <motion.section className="relative w-full -mt-6 h-[90vh] flex flex-col justify-center items-left text-center text-white overflow-hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
@@ -126,7 +126,7 @@ function Home() {
       </motion.section>
 
       {/* PARALLAX LUXURY BANNER */}
-      <section className="relative w-full h-[98vh] py-26 overflow-hidden">
+      <section className="relative w-full min-h-[90vh] py-26 overflow-visible">
         <div
           className="absolute inset-0 bg-fixed bg-center bg-cover"
           style={{
@@ -155,7 +155,7 @@ function Home() {
             viewport={{ once: true, amount: 0.3 }}
             transition={{ delay: 0.5, duration: 1 }}
           >
-            <div className='max-w-7xl mx-auto bg-white/00 py-16 px-16 rounded-4xl grid gap-8 sm:grid-cols lg:grid-cols-4'>
+            <div className='max-w-7xl mx-auto bg-white/00 py-4 px-8 rounded-4xl grid gap-8 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4'>
               {featured.map((watch) => (
                 <Link to={`/watch/${watch.reference_number}`}
                   key={watch.id}

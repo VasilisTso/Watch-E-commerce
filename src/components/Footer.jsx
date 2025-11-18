@@ -6,7 +6,7 @@ function Footer() {
     };
 
     return (
-        <footer className='text-center w-full bg-[#345753] py-10 mt-10 border-t border-gray-200'>
+        <footer className='text-center w-full bg-black/70 py-10 border-t border-gray-600'>
             <div className="max-w-7xl mx-auto px-4">
                 <button onClick={scrollToTop}
                     className="text-gray-200 hover:text-gray-300 hover:scale-102 cursor-pointer mb-4 rounded-lg px-2 py-1 transition shadow-sm shadow-gray-600"

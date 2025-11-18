@@ -8,7 +8,7 @@ function MainLayout() {
       {/* NAVBAR */}
       <Navbar />
       {/* MAIN CONTENT – FULL WIDTH BG + CENTERED INNER CONTAINER */}
-      <main className="flex-grow w-full">
+      <main className="flex-grow w-full pt-26">
         <div className="mx-auto">
           <Outlet /> {/* This renders the current page */}
         </div>

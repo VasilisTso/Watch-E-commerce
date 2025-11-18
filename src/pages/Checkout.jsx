@@ -140,6 +140,7 @@ function Checkout() {
 
             <motion.div initial={{ opacity: 0, y: 40 }}
                 animate={{ opacity: 1, y: 0 }}
+                className="max-w-7xl bg-white z-10 mx-auto p-2 md:py-4"
             >
                 <Link
                     to="/cart"

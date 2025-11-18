@@ -123,329 +123,334 @@ function Shop() {
 
   return (
     <>
-      <motion.div className="max-w-5xl mx-auto p-2 md:p-4 text-left mt-30"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-      >
-        <div className="text-sm text-gray-500">
-          <Link to="/" className="hover:underline text-blue-600">
-            Home
-          </Link>{" "}
-          / <span className="text-gray-700">Shop</span>
-        </div>
-      </motion.div>
-
-      <motion.div initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="grid grid-cols-1 lg:grid-cols-4 gap-8"
-      >
-        {/* sidebar(Desktop) */}
-        <aside className="hidden lg:block lg:col-span-1 p-6 bg-white shadow-mf rounded-xl h-fit sticky top-4 space-y-6 border-r border-gray-200">
-          <h3 className="text-xl font-semibold mb-3">Filters</h3>
-          {/* brand filters */}
-          <div>
-            <p className="font-medium mb-2">Brand</p>
-
-            {/* Search Input */}
-            <input
-              type="text"
-              placeholder="Search brand"
-              value={brandSearch}
-              onChange={(e) => setBrandSearch(e.target.value)}
-              className="w-full mb-2 px-3 py-2 border rounded-lg"
-            />
-            <div className="space-y-2">
-              {visibleBrands.map((b) => (
-                <label key={b} className="flex items-center gap-2">
-                  <input type="checkbox" 
-                    checked={filterBrand === b}
-                    onChange={() => 
-                      setFilterBrand(filterBrand === b ? "" : b)
-                    }
-                  />
-                  <span>{b}</span>
-                </label>
-              ))}
-            </div>
-            {/* Show more / Show less */}
-            {filteredBrandsList.length > 4 && (
-              <button onClick={() => setBrandExpanded(!brandExpanded)}
-                className="text-blue-600 mt-2 text-sm cursor-pointer"
-              >
-                {brandExpanded ? "Show Less" : "Show More"}
-              </button>
-            )}
+      <div className="">
+        <motion.div className="max-w-7xl bg-white z-10 mx-auto p-2 md:py-4"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        >
+          <div className="text-sm text-gray-500">
+            <Link to="/" className="hover:underline text-blue-600">
+              Home
+            </Link>{" "}
+            / <span className="text-gray-700">Shop</span>
           </div>
+        </motion.div>
 
-          {/* MOVEMENT FILTER */}
-          <div>
-            <p className="font-medium mb-2">Movement</p>
-            <label className="flex items-center gap-2">
-              <input type="checkbox"
-                checked={filterMovement === "Automatic"}
-                onChange={() => 
-                  setFilterMovement(filterMovement === "Automatic" ? "" : "Automatic")
-                }
-              />
-              Automatic
-            </label>
-            <label className="flex items-center gap-2">
-            <input type="checkbox"
-              checked={filterMovement === "Battery"}
-              onChange={() =>
-                setFilterMovement(filterMovement === "Battery" ? "" : "Battery")
-              }
-            />
-            Battery
-          </label>
-          </div>
+        <motion.div initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="max-w-7xl mx-auto bg-white grid grid-cols-1 lg:grid-cols-4 gap-8 p-2 md:p-4"
+        >
+          {/* sidebar(Desktop) */}
+          <aside className="hidden lg:block lg:col-span-1 p-6 bg-white shadow-mf rounded-xl h-fit sticky top-4 space-y-6 border-r border-gray-200">
+            <h3 className="text-xl font-semibold mb-3">Filters</h3>
+            {/* brand filters */}
+            <div>
+              <p className="font-medium mb-2">Brand</p>
 
-          {/* PRICE SLIDER */}
-          <div>
-            <p className="font-medium mb-2">Price Range</p>
-            {/* MIN & MAX Inputs */}
-            <div className="flex items-center gap-3 mb-3">
+              {/* Search Input */}
               <input
-                type="number"
-                value={priceRange[0]}
-                min={0}
-                onChange={(e) =>
-                  setPriceRange([Number(e.target.value) || 0, priceRange[1]])
-                }
-                className="w-24 px-2 py-1 border rounded"
-                placeholder="Min"
+                type="text"
+                placeholder="Search brand"
+                value={brandSearch}
+                onChange={(e) => setBrandSearch(e.target.value)}
+                className="w-full mb-2 px-3 py-2 border rounded-lg"
               />
-              <span>-</span>
-              <input
-                type="number"
-                value={priceRange[1] === Infinity ? "" : priceRange[1]}
-                min={0}
-                onChange={(e) =>
-                  setPriceRange([priceRange[0], Number(e.target.value) || Infinity])
-                }
-                className="w-24 px-2 py-1 border rounded"
-                placeholder="Max"
-              />
-            </div>
-
-            {/* Slider - controls MAX only */}
-            <input type="range" 
-              min="0"
-              max="2000000"
-              step="1000"
-              value={priceRange[1] === Infinity ? 2000000 : priceRange[1]}
-              onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value) || Infinity])}
-              className="w-full"
-            />
-            {/* Display Value */}
-            <span className="text-gray-700 block mt-1">
-              Up to: {priceRange[1] === Infinity ? "∞" : priceRange[1].toLocaleString()} €
-            </span>
-          </div>
-
-          {/* SORT */}
-          <div>
-            <p className="font-medium mb-2">Sort</p>
-            <select value={sortOrder}
-              onChange={(e) => setSortOrder(e.target.value)}
-              className="border px-3 py-2 rounded w-full"
-            >
-              <option value="">None</option>
-              <option value="priceAsc">Price: Low → High</option>
-              <option value="priceDesc">Price: High → Low</option>
-            </select>
-          </div>
-
-          {/* RESET */}
-          <button className="mt-4 w-full bg-gray-200 hover:bg-gray-300 transition px-4 py-2 rounded-lg"
-            onClick={() => {
-              setFilterBrand("");
-              setFilterMovement("");
-              setPriceRange([0, Infinity]);
-              setSortOrder("");
-            }}
-          >
-            Reset Filters
-          </button>
-        </aside>
-
-        {/* MOBILE FILTER DRAWER */}
-        {isFilterOpen && (
-          <motion.div initial={{ x: "-100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "-100%" }}
-            transition={{ duration: 0.1 }}
-            className="fixed inset-0 bg-black/20 backdrop-blur-xs z-40 flex"
-            onClick={() => setIsFilterOpen(false)} // close when backdrop clicked
-          >
-            <div
-              onClick={(e) => e.stopPropagation()} // prevent closing when clicking panel
-              className="w-72 max-w-full bg-white h-full p-6 overflow-y-auto shadow-xl space-y-6"
-            >
-              <div className="flex justify-between items-center">
-                <h3 className="text-xl font-semibold">Filters</h3>
-                <button
-                  onClick={() => setIsFilterOpen(false)}
-                  className="text-gray-600 text-lg"
+              <div className="space-y-2">
+                {visibleBrands.map((b) => (
+                  <label key={b} className="flex items-center gap-2">
+                    <input type="checkbox" 
+                      checked={filterBrand === b}
+                      onChange={() => 
+                        setFilterBrand(filterBrand === b ? "" : b)
+                      }
+                    />
+                    <span>{b}</span>
+                  </label>
+                ))}
+              </div>
+              {/* Show more / Show less */}
+              {filteredBrandsList.length > 4 && (
+                <button onClick={() => setBrandExpanded(!brandExpanded)}
+                  className="text-blue-600 mt-2 text-sm cursor-pointer"
                 >
-                  ✕
+                  {brandExpanded ? "Show Less" : "Show More"}
                 </button>
-              </div>
+              )}
+            </div>
 
-              {/* brand filters */}
-              <div>
-                <p className="font-medium mb-2">Brand</p>
-                {/* Search Input */}
-                <input
-                  type="text"
-                  placeholder="Search brands…"
-                  value={brandSearch}
-                  onChange={(e) => setBrandSearch(e.target.value)}
-                  className="w-full mb-2 px-3 py-2 border rounded"
-                />
-                <div className="space-y-2">
-                  {visibleBrands.map((b) => (
-                    <label key={b} className="flex items-center gap-2">
-                      <input type="checkbox" 
-                        checked={filterBrand === b}
-                        onChange={() => 
-                          setFilterBrand(filterBrand === b ? "" : b)
-                        }
-                      />
-                      <span>{b}</span>
-                    </label>
-                  ))}
-                </div>
-                {/* Show more / Show less */}
-                {filteredBrandsList.length > 4 && (
-                  <button
-                    onClick={() => setBrandExpanded(!brandExpanded)}
-                    className="text-blue-600 mt-2 text-sm cursor-pointer"
-                  >
-                    {brandExpanded ? "Show Less" : "Show More"}
-                  </button>
-                )}
-              </div>
-
-              {/* MOVEMENT FILTER */}
-              <div>
-                <p className="font-medium mb-2">Movement</p>
-                <label className="flex items-center gap-2">
-                  <input type="checkbox"
-                    checked={filterMovement === "Automatic"}
-                    onChange={() => 
-                      setFilterMovement(filterMovement === "Automatic" ? "" : "Automatic")
-                    }
-                  />
-                  Automatic
-                </label>
-                <label className="flex items-center gap-2">
+            {/* MOVEMENT FILTER */}
+            <div>
+              <p className="font-medium mb-2">Movement</p>
+              <label className="flex items-center gap-2">
                 <input type="checkbox"
-                  checked={filterMovement === "Battery"}
-                  onChange={() =>
-                    setFilterMovement(filterMovement === "Battery" ? "" : "Battery")
+                  checked={filterMovement === "Automatic"}
+                  onChange={() => 
+                    setFilterMovement(filterMovement === "Automatic" ? "" : "Automatic")
                   }
                 />
-                Battery
+                Automatic
               </label>
-              </div>
-
-              {/* PRICE SLIDER */}
-              <div>
-                <p className="font-medium mb-2">Max Price</p>
-                <input type="range" 
-                  min="0"
-                  max="1000000"
-                  step="1000"
-                  onChange={(e) => setPriceRange([0, Number(e.target.value)])}
-                  className="w-full"
-                />
-                <span className="text-gray-700 block mt-1">
-                  Up to: {priceRange[1].toLocaleString()} €
-                </span>
-              </div>
-
-              {/* SORT */}
-              <div>
-                <p className="font-medium mb-2">Sort</p>
-                <select value={sortOrder}
-                  onChange={(e) => setSortOrder(e.target.value)}
-                  className="border px-3 py-2 rounded w-full"
-                >
-                  <option value="">None</option>
-                  <option value="priceAsc">Price: Low → High</option>
-                  <option value="priceDesc">Price: High → Low</option>
-                </select>
-              </div>
-
-              {/* RESET */}
-              <button className="mt-4 w-full bg-gray-200 hover:bg-gray-300 transition px-4 py-2 rounded-lg"
-                onClick={() => {
-                  setFilterBrand("");
-                  setFilterMovement("");
-                  setPriceRange([0, Infinity]);
-                  setSortOrder("");
-                }}
-              >
-                Reset Filters
-              </button>
+              <label className="flex items-center gap-2">
+              <input type="checkbox"
+                checked={filterMovement === "Battery"}
+                onChange={() =>
+                  setFilterMovement(filterMovement === "Battery" ? "" : "Battery")
+                }
+              />
+              Battery
+            </label>
             </div>
-          </motion.div>
-        )}
 
-        {/* MOBILE FILTER BUTTON */}
-        <div className="lg:hidden flex justify-end mb-4">
-          <button
-            onClick={() => setIsFilterOpen(true)}
-            className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
-          >
-            Filters
-          </button>
-        </div>
+            {/* PRICE SLIDER */}
+            <div>
+              <p className="font-medium mb-2">Price Range</p>
+              {/* MIN & MAX Inputs */}
+              <div className="flex items-center gap-3 mb-3">
+                <input
+                  type="number"
+                  value={priceRange[0]}
+                  min={0}
+                  onChange={(e) =>
+                    setPriceRange([Number(e.target.value) || 0, priceRange[1]])
+                  }
+                  className="w-24 px-2 py-1 border rounded"
+                  placeholder="Min"
+                />
+                <span>-</span>
+                <input
+                  type="number"
+                  value={priceRange[1] === Infinity ? "" : priceRange[1]}
+                  min={0}
+                  onChange={(e) =>
+                    setPriceRange([priceRange[0], Number(e.target.value) || Infinity])
+                  }
+                  className="w-24 px-2 py-1 border rounded"
+                  placeholder="Max"
+                />
+              </div>
 
-        {/* WATCHES GRID */}
-        <section className="lg:col-span-3">
-          {/* RESULTS COUNT */}
-          <p className="text-gray-600 mb-4">
-            Showing <span className="text-lg font-semibold">{filtered.length}</span> of{" "}
-            <span className="text-lg font-semibold">{watches.length}</span> watches
-          </p>
-          
-          <h2 className="text-2xl font-semibold mb-4">Shop Watches</h2>
+              {/* Slider - controls MAX only */}
+              <input type="range" 
+                min="0"
+                max="2000000"
+                step="1000"
+                value={priceRange[1] === Infinity ? 2000000 : priceRange[1]}
+                onChange={(e) => setPriceRange([priceRange[0], Number(e.target.value) || Infinity])}
+                className="w-full"
+              />
+              {/* Display Value */}
+              <span className="text-gray-700 block mt-1">
+                Up to: {priceRange[1] === Infinity ? "∞" : priceRange[1].toLocaleString()} €
+              </span>
+            </div>
 
-          {filtered.length === 0 && (
-            <p className="text-gray-500 text-lg mt-10">No watches found for your filters.</p>
+            {/* SORT */}
+            <div>
+              <p className="font-medium mb-2">Sort</p>
+              <select value={sortOrder}
+                onChange={(e) => setSortOrder(e.target.value)}
+                className="border px-3 py-2 rounded w-full"
+              >
+                <option value="">None</option>
+                <option value="priceAsc">Price: Low → High</option>
+                <option value="priceDesc">Price: High → Low</option>
+              </select>
+            </div>
+
+            {/* RESET */}
+            <button className="mt-4 w-full bg-gray-200 hover:bg-gray-300 transition px-4 py-2 rounded-lg"
+              onClick={() => {
+                setFilterBrand("");
+                setFilterMovement("");
+                setPriceRange([0, Infinity]);
+                setSortOrder("");
+              }}
+            >
+              Reset Filters
+            </button>
+          </aside>
+
+          {/* MOBILE FILTER DRAWER */}
+          {isFilterOpen && (
+            <motion.div initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ duration: 0.1 }}
+              className="fixed inset-0 bg-black/20 backdrop-blur-xs mt-20 z-40 flex"
+              onClick={() => setIsFilterOpen(false)} // close when backdrop clicked
+            >
+              <div
+                onClick={(e) => e.stopPropagation()} // prevent closing when clicking panel
+                className="w-72 max-w-full bg-white h-full p-6 overflow-y-auto shadow-xl space-y-6"
+              >
+                <div className="flex justify-between items-center">
+                  <h3 className="text-xl font-semibold">Filters</h3>
+                  <button
+                    onClick={() => setIsFilterOpen(false)}
+                    className="text-gray-600 text-lg"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                {/* brand filters */}
+                <div>
+                  <p className="font-medium mb-2">Brand</p>
+                  {/* Search Input */}
+                  <input
+                    type="text"
+                    placeholder="Search brands…"
+                    value={brandSearch}
+                    onChange={(e) => setBrandSearch(e.target.value)}
+                    className="w-full mb-2 px-3 py-2 border rounded"
+                  />
+                  <div className="space-y-2">
+                    {visibleBrands.map((b) => (
+                      <label key={b} className="flex items-center gap-2">
+                        <input type="checkbox" 
+                          checked={filterBrand === b}
+                          onChange={() => 
+                            setFilterBrand(filterBrand === b ? "" : b)
+                          }
+                        />
+                        <span>{b}</span>
+                      </label>
+                    ))}
+                  </div>
+                  {/* Show more / Show less */}
+                  {filteredBrandsList.length > 4 && (
+                    <button
+                      onClick={() => setBrandExpanded(!brandExpanded)}
+                      className="text-blue-600 mt-2 text-sm cursor-pointer"
+                    >
+                      {brandExpanded ? "Show Less" : "Show More"}
+                    </button>
+                  )}
+                </div>
+
+                {/* MOVEMENT FILTER */}
+                <div>
+                  <p className="font-medium mb-2">Movement</p>
+                  <label className="flex items-center gap-2">
+                    <input type="checkbox"
+                      checked={filterMovement === "Automatic"}
+                      onChange={() => 
+                        setFilterMovement(filterMovement === "Automatic" ? "" : "Automatic")
+                      }
+                    />
+                    Automatic
+                  </label>
+                  <label className="flex items-center gap-2">
+                  <input type="checkbox"
+                    checked={filterMovement === "Battery"}
+                    onChange={() =>
+                      setFilterMovement(filterMovement === "Battery" ? "" : "Battery")
+                    }
+                  />
+                  Battery
+                </label>
+                </div>
+
+                {/* PRICE SLIDER */}
+                <div>
+                  <p className="font-medium mb-2">Max Price</p>
+                  <input type="range" 
+                    min="0"
+                    max="1000000"
+                    step="1000"
+                    onChange={(e) => setPriceRange([0, Number(e.target.value)])}
+                    className="w-full"
+                  />
+                  <span className="text-gray-700 block mt-1">
+                    Up to: {priceRange[1].toLocaleString()} €
+                  </span>
+                </div>
+
+                {/* SORT */}
+                <div>
+                  <p className="font-medium mb-2">Sort</p>
+                  <select value={sortOrder}
+                    onChange={(e) => setSortOrder(e.target.value)}
+                    className="border px-3 py-2 rounded w-full"
+                  >
+                    <option value="">None</option>
+                    <option value="priceAsc">Price: Low → High</option>
+                    <option value="priceDesc">Price: High → Low</option>
+                  </select>
+                </div>
+
+                {/* RESET */}
+                <button className="mt-4 w-full bg-gray-200 hover:bg-gray-300 transition px-4 py-2 rounded-lg"
+                  onClick={() => {
+                    setFilterBrand("");
+                    setFilterMovement("");
+                    setPriceRange([0, Infinity]);
+                    setSortOrder("");
+                  }}
+                >
+                  Reset Filters
+                </button>
+              </div>
+            </motion.div>
           )}
 
-          <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* was originally filtered but replaced for pagination */}
-            {paginatedData.map((watch) => (
-              <WatchCard key={watch.id} watch={watch} />
-            ))}
-          </div>
+          {/* WATCHES GRID */}
+          <section className="lg:col-span-3">
+            <div className="flex items-center justify-between">
+              {/* RESULTS COUNT */}
+              <p className="text-gray-600 mb-4">
+                Showing <span className="text-lg font-semibold">{filtered.length}</span> of{" "}
+                <span className="text-lg font-semibold">{watches.length}</span> watches
+              </p>
 
-          {/* PAGINATION BUTTONS */}
-          {totalPages > 1 && (
-            <div className="flex justify-center mt-8 gap-2">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
+              {/* MOBILE FILTER BUTTON */}
+              <div className="lg:hidden flex justify-end mb-4">
                 <button
-                  key={num}
-                  onClick={() => setCurrentPage(num)}
-                  className={`px-4 py-2 rounded-lg border transition cursor-pointer ${
-                    currentPage === num
-                      ? "bg-blue-600 text-white"
-                      : "bg-white hover:bg-gray-300"
-                  }`}
+                  onClick={() => setIsFilterOpen(true)}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
                 >
-                  {num}
+                  Filters
                 </button>
+              </div>
+            </div>
+            
+            <h2 className="text-2xl font-semibold mb-4">Shop Watches</h2>
+
+            {filtered.length === 0 && (
+              <p className="text-gray-500 text-lg mt-10 text-center">No watches found for your filters.</p>
+            )}
+
+            <div className="mt-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+              {/* was originally filtered but replaced for pagination */}
+              {paginatedData.map((watch) => (
+                <WatchCard key={watch.id} watch={watch} />
               ))}
             </div>
-          )}
-        </section>
-      </motion.div>
+
+            {/* PAGINATION BUTTONS */}
+            {totalPages > 1 && (
+              <div className="flex justify-center mt-8 gap-2">
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
+                  <button
+                    key={num}
+                    onClick={() => setCurrentPage(num)}
+                    className={`px-4 py-2 rounded-lg border transition cursor-pointer ${
+                      currentPage === num
+                        ? "bg-blue-600 text-white"
+                        : "bg-white hover:bg-gray-300"
+                    }`}
+                  >
+                    {num}
+                  </button>
+                ))}
+              </div>
+            )}
+          </section>
+        </motion.div>
+      </div>
+      
     </>
   )
 }
