@@ -1,6 +1,6 @@
 # Chronos Collective – Luxury & Modern Watches E-Shop
 
-**Chronos Collective** is a modern, responsive React + Node (optional backend) web application designed for showcasing and selling high-end watches. Built with premium aesthetics in mind, it features elegant layouts, smooth animations, and refined UX — ideal for inclusion in your portfolio. If the API reaches the max limit or can't connect to the API, the watches information are from the mockWatches.js file.
+**Chronos Collective** is a modern, responsive React + Node web application designed for showcasing and selling high-end watches. Built with premium aesthetics in mind, it features elegant layouts, smooth animations, and refined UX. If the API reaches the max limit or can't connect to the API, the watches information are from the mockWatches.js file.
 
 ## Technologies & Tools
 
