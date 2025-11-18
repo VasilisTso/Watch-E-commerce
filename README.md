@@ -40,4 +40,14 @@
 
 ## Screenshots
 
+### Home page
 
+### Shop/All watches page with filtering
+
+### Watch Details page
+
+### Cart page
+
+### Checkout page
+
+### Order Placed
