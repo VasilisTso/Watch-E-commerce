@@ -12,7 +12,7 @@ function Home() {
   return (
     <div className='flex flex-col items-center'>
       {/* HERO SECTION */}
-      <motion.section className="relative w-full -mt-6 h-[90vh] flex flex-col justify-center items-left text-center text-white overflow-hidden"
+      <motion.section className="relative w-full -mt-6 h-[92vh] flex flex-col justify-center items-left text-center text-white overflow-hidden"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
