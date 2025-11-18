@@ -115,9 +115,15 @@ function Shop() {
   const paginatedData = filtered.slice(indexOfFirstItem, indexOfLastItem);
   const totalPages = Math.ceil(filtered.length / itemsPerPage);
 
+  // after changing page scroll on the top
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentPage]);
+
+
   return (
     <>
-      <motion.div className="max-w-5xl mx-auto p-2 md:p-4 text-left"
+      <motion.div className="max-w-5xl mx-auto p-2 md:p-4 text-left mt-30"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6, ease: "easeOut" }}

@@ -5,9 +5,13 @@ import Footer from "../components/Footer";
 function MainLayout() {
   return (
     <div className="flex flex-col min-h-screen">
+      {/* NAVBAR */}
       <Navbar />
-      <main className="flex-grow container mx-auto px-4 py-8">
-        <Outlet /> {/* This renders the current page */}
+      {/* MAIN CONTENT – FULL WIDTH BG + CENTERED INNER CONTAINER */}
+      <main className="flex-grow w-full">
+        <div className="mx-auto">
+          <Outlet /> {/* This renders the current page */}
+        </div>
       </main>
       <Footer />
     </div>
