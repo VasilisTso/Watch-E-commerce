@@ -1,16 +1,43 @@
-# React + Vite
+# Chronos Collective – Luxury & Modern Watches E-Shop
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+**Chronos Collective** is a modern, responsive React + Node (optional backend) web application designed for showcasing and selling high-end watches. Built with premium aesthetics in mind, it features elegant layouts, smooth animations, and refined UX — ideal for inclusion in your portfolio. If the API reaches the max limit or can't connect to the API, the watches information are from the mockWatches.js file.
 
-Currently, two official plugins are available:
+## Technologies & Tools
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- **React** with React Router for single-page navigation  
+- **Tailwind CSS** for utility-first styling and responsive design  
+- **Framer Motion** for smooth animations and scroll-triggered effects  
+- **Context API** for global cart state and shared logic  
+- **mockWatches.json** for simulated product data, with optional free watch API integration  
+- **Vite** for fast dev environment (or Create React App if preferred)  
+- Optional Node.js/Express backend if you decide to add product endpoints / payment mock
 
-## React Compiler
+## Key Features
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- **Hero Section** – immersive brand imagery and call to action  
+- **Featured Brands Carousel Section** – premium logos hover effects  
+- **Parallax Luxury Banner** – full-width visual emphasis for premium feel  
+- **Why Choose Us Section** – trust badges with iconography and concise copy  
+- **Shop Page with Filters & Sorting**  
+  - Brand search & collapsible lists  
+  - Movement filter (Automatic, Battery/Quartz)  
+  - Price slider + min/max inputs  
+  - Sort by price ascending/descending  
+  - Pagination for large datasets  
+  - Responsive grid layout  
+- **Watch Details Page** – dynamic pages with full product data, image fallback, checkouts  
+- **Cart & Checkout Flow**  
+  - Add to cart logic (quantity control)  
+  - Cart badge with animation in navbar  
+  - Checkout form with persistence (localStorage)  
+  - Overlay spinner when processing order  
+  - Order confirmation screen with checkmark, generated order number, countdown redirect  
+- **Navbar & Footer** 
+  - Mobile hamburger menu drawer  
+  - Footer with full-width background, centered content and premium styling  
+- **Responsive & Mobile-First** design across all breakpoints  
+- **Scroll-Triggered Animations** (Framer Motion `whileInView`) for staggered reveals and premium polish  
 
-## Expanding the ESLint configuration
+## Screenshots
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+
